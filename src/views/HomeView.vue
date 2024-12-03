@@ -6,8 +6,8 @@
       <ul class="nav-links">
         <li><a style="border-bottom: 2px solid red" href="#">Home</a></li>
         <li><a href="#books">Library</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#about">About</a></li>
+        <router-link :to="{ name: 'Contact' }"><li><a href="#">Contact</a></li></router-link>
       </ul>
       <div class="nav-actions">
         <div class="search-container">
@@ -46,12 +46,13 @@
           <!-- Image Section -->
           <div class="image-container">
             <router-link :to="{ name: 'BookDetails', params: { id: book.id } }">
-            <img
-              class="product-image"
-              :src="require(`@/assets/images/${book.image}`)"
-              :alt="book.title"
-              :class="{ blurred: book.quantity === 0 }"
-              /></router-link>
+              <img
+                class="product-image"
+                :src="require(`@/assets/images/${book.image}`)"
+                :alt="book.title"
+                :class="{ blurred: book.quantity === 0 }"
+              />
+            </router-link>
             <div v-if="book.quantity === 0" class="out-of-stock-label">Out of Stock</div>
           </div>
 
@@ -59,13 +60,13 @@
           <h5>{{ book.title }}</h5>
           <p>{{ book.author }}</p>
 
-          <!-- Button Section -->
+          <!-- Add to Cart Button -->
           <button
             class="shop-button"
-            :disabled="book.quantity === 0"
+            :disabled="cartCount >= book.quantity"
             :aria-disabled="book.quantity === 0"
             :class="{ disabled: book.quantity === 0 }"
-            @click="addToCart(book.id)"
+            @click="addToCart(book)"
           >
             Add to Cart
           </button>
@@ -73,10 +74,10 @@
           <!-- Decrease Cart Count Button -->
           <button
             class="shop-button"
-            :disabled="cartCount === 0"
-            @click="decreaseCartCount"
-            :class="{ disabled: cartCount === 0 || book.quantity === 0 }"
-            v-if="cartCount > 0"
+            :disabled="!isInCart(book)"
+            @click="decreaseCartCount(book)"
+            :class="{ disabled: !isInCart(book) }"
+            v-if="isInCart(book)"
           >
             Decrease Cart Count
           </button>
@@ -84,46 +85,42 @@
       </div>
     </section>
 
+    <!-- About Section -->
     <div class="about">
       <div class="about_image">
         <img src="../assets/images/about.png" />
       </div>
       <div class="about_tag">
-        <h1>About Us</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae cumque
-          atque dolor corporis architecto.
-        </p>
+        <h1 id="about">About Us</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae cumque atque dolor corporis architecto.</p>
         <a href="#" class="about_btn">Learn More</a>
       </div>
     </div>
+
     <div id="app">
-    <MessageView @message-submitted="addReview" />
-    <MessageList :reviews="reviews" />
-  </div>
+      <MessageView @message-submitted="addReview" />
+      <MessageList :reviews="reviews" />
+    </div>
 
     <FooterView></FooterView>
   </div>
 </template>
-
 <script>
 import axios from "axios";
 import MessageView from '@/components/MessageView.vue';
 import MessageList from '../components/MessageList.vue';
-
-
 import FooterView from "@/components/FooterView.vue";
 
 export default {
   name: "HomePage",
   components: {
-    MessageList, MessageView,FooterView,
+    MessageList, MessageView, FooterView,
   },
   data() {
     return {
       books: [],
       searchQuery: "",
-      cartCount: 0,
+      cart: [],  // Store books added to the cart
       reviews: [],
     };
   },
@@ -132,6 +129,9 @@ export default {
       return this.books.filter((book) =>
         book.title.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
+    },
+    cartCount() {
+      return this.cart.length;
     },
   },
   mounted() {
@@ -148,15 +148,19 @@ export default {
     exploreBooks() {
       window.location.href = "#books";
     },
-    addToCart(bookId) {
-      this.cartCount++;
-      console.log(`Book ${bookId} added to cart.`);
+    addToCart(book) {
+      this.cart.push(book);
+      console.log(`Book ${book.id} added to cart.`);
     },
-    decreaseCartCount() {
-      if (this.cartCount > 0) {
-        this.cartCount--;
-        console.log("Cart count decreased.");
+    decreaseCartCount(book) {
+      const index = this.cart.findIndex(item => item.id === book.id);
+      if (index !== -1) {
+        this.cart.splice(index, 1);  // Remove the book from the cart
+        console.log(`Cart count for book ${book.id} decreased.`);
       }
+    },
+    isInCart(book) {
+      return this.cart.some(item => item.id === book.id);
     },
     addReview(newReview) {
       // Ajouter le commentaire reçu à la liste

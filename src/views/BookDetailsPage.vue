@@ -5,8 +5,8 @@
         <ul class="nav-links">
           <router-link :to="{ name: 'Home' }"><li><a style="border-bottom: 2px solid red" href="#">Home</a></li></router-link>
           <li><a href="#books">Library</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#about">About</a></li>
+          <router-link :to="{ name: 'Contact' }"><li><a href="#">Contact</a></li></router-link>
         </ul>
         <div class="nav-actions">
           <div class="search-container">
