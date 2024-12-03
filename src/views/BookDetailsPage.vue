@@ -3,7 +3,7 @@
       <nav class="navbar">
         <div class="logo"><b style="margin-left: 50px;">PROJECT</b></div>
         <ul class="nav-links">
-            <router-link :to="{ name: 'Home' }"><li><a style="border-bottom: 2px solid red" href="#">Home</a></li></router-link>
+          <router-link :to="{ name: 'Home' }"><li><a style="border-bottom: 2px solid red" href="#">Home</a></li></router-link>
           <li><a href="#books">Library</a></li>
           <li><a href="#">About</a></li>
           <li><a href="#">Contact</a></li>
@@ -22,50 +22,91 @@
         </div>
       </nav>
   
-      <h1>{{ book.title || 'Book Details' }}</h1> <!-- Titre par défaut si `book.title` est vide -->
+      <h1>{{ book.title || 'Book Details' }}</h1>
   
-      <div v-if="book.title" class="book-detail"> <!-- Affichage conditionnel pour éviter erreurs si `book` est vide -->
+      <div v-if="book.title">
         <img :src="book.image ? require(`@/assets/images/${book.image}`) : require('@/assets/images/shopping-bag.png')" :alt="book.title" />
         <h2>{{ book.title }}</h2>
         <p><strong>Author:</strong> {{ book.author }}</p>
         <p><strong>Description:</strong> {{ book.description }}</p>
       </div>
+  
+      <!-- Add to Cart Button -->
+      <button
+        class="shop-button"
+        :disabled="cartCount >= book.quantity"
+        :aria-disabled="cartCount >= book.quantity"
+        :class="{ disabled: cartCount >= book.quantity }"
+        @click="addToCart(book.id)"
+      >
+        Add to Cart
+      </button>
+  
+      <!-- Decrease Cart Count Button -->
+      <button
+        class="shop-button"
+        :disabled="cartCount === 0"
+        @click="decreaseCartCount"
+        :class="{ disabled: cartCount === 0 || book.quantity === 0 }"
+        v-if="cartCount > 0"
+      >
+        Decrease Cart Count
+      </button>
+  
       <div v-else>
-        <p>Loading book details...</p> <!-- Message de chargement si le livre n'est pas encore récupéré -->
+        <p>Loading book details...</p>
       </div>
     </div>
   </template>
   
   <script>
-  import axios from 'axios';
-  
-  export default {
-    name: 'BookDetailsPage',
-    data() {
-      return {
-        book: {}, // Initialisation d'un objet vide pour `book`
-        searchQuery: '', // Ajout de `searchQuery` si nécessaire
-        cartCount: 0, // Ajout de `cartCount` si nécessaire
-      };
+import axios from 'axios';
+
+export default {
+  name: 'BookDetailsPage',
+  data() {
+    return {
+      book: {}, // Book data
+      searchQuery: '', // Search query for the search bar
+      cartCount: 0, // Count of books in the cart
+    };
+  },
+  mounted() {
+    const bookId = Number(this.$route.params.id); // Get book ID from route
+    axios
+      .get('https://raw.githubusercontent.com/Benhmidaahmed/books/main/books')
+      .then((response) => {
+        const bookData = response.data.books.find((b) => b.id === bookId);
+        if (bookData) {
+          this.book = bookData; // Set the book data
+        } else {
+          console.error('Book not found!');
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching book details:', error);
+      });
+  },
+  methods: {
+    exploreBooks() {
+      window.location.href = "#books";
     },
-    mounted() {
-      const bookId = Number(this.$route.params.id); // Conversion de l'ID en nombre
-      axios
-        .get('https://raw.githubusercontent.com/Benhmidaahmed/books/main/books')
-        .then((response) => {
-          const bookData = response.data.books.find((b) => b.id === bookId);
-          if (bookData) {
-            this.book = bookData; // Si le livre est trouvé, on le stocke dans `book`
-          } else {
-            console.error('Book not found!');
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching book details:', error);
-        });
+    addToCart(bookId) {
+      if (this.cartCount < this.book.quantity) {
+        this.cartCount++; // Increase cart count only if it's less than available stock
+        console.log(`Book ${bookId} added to cart.`);
+      }
     },
-  };
-  </script>
+    decreaseCartCount() {
+      if (this.cartCount > 0) {
+        this.cartCount--; // Decrease cart count
+        console.log("Cart count decreased.");
+      }
+    },
+  },
+};
+</script>
+
   
   <style scoped>
   .navbar {

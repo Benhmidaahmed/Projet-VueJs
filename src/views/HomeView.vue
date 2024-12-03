@@ -75,6 +75,7 @@
             class="shop-button"
             :disabled="cartCount === 0"
             @click="decreaseCartCount"
+            :class="{ disabled: cartCount === 0 || book.quantity === 0 }"
             v-if="cartCount > 0"
           >
             Decrease Cart Count
@@ -96,6 +97,10 @@
         <a href="#" class="about_btn">Learn More</a>
       </div>
     </div>
+    <div id="app">
+    <MessageView @message-submitted="addReview" />
+    <MessageList :reviews="reviews" />
+  </div>
 
     <FooterView></FooterView>
   </div>
@@ -103,18 +108,23 @@
 
 <script>
 import axios from "axios";
+import MessageView from '@/components/MessageView.vue';
+import MessageList from '../components/MessageList.vue';
+
+
 import FooterView from "@/components/FooterView.vue";
 
 export default {
   name: "HomePage",
   components: {
-    FooterView,
+    MessageList, MessageView,FooterView,
   },
   data() {
     return {
       books: [],
       searchQuery: "",
       cartCount: 0,
+      reviews: [],
     };
   },
   computed: {
@@ -147,6 +157,10 @@ export default {
         this.cartCount--;
         console.log("Cart count decreased.");
       }
+    },
+    addReview(newReview) {
+      // Ajouter le commentaire reçu à la liste
+      this.reviews.push(newReview);
     },
   },
 };
@@ -349,4 +363,36 @@ export default {
 .outOfStock {
   opacity: 0.6;
 }
+/*about*/
+
+.about{
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.about .about_image img{
+    width: 800px;
+}
+
+.about .about_tag p{
+    line-height: 22px;
+    width: 650px;
+    text-align: justify;
+    margin-bottom: 15px;
+}
+
+.about .about_tag .about_btn{
+    padding: 10px 20px;
+    background: #a3a8a8;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    top: 50px;
+}
+/* about  end */
 </style>
