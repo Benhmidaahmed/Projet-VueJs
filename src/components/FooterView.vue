@@ -1,24 +1,18 @@
 <template>
-    <!-- footer -->
-    <footer id="footer"    data-aos="fade-up"
-  data-aos-duration="1500">
-    <h1 class="text-center">Bookly</h1>
-    <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, accusantium.</p>
-    <div class="icons text-center">
-        <i class="bx bxl-twitter"></i>
-        <i class="bx bxl-facebook"></i>
-        <i class="bx bxl-google"></i>
-        <i class="bx bxl-skype"></i>
-        <i class="bx bxl-instagram"></i>
-    </div>
-    <div class="copyright text-center">
-        &copy; Copyright <strong>Bookly</strong> .All Rights Reserved
-    </div>
-    <div class="credite text-center">
-        Designed By <a href="#"><span>RANIA & AMAL</span></a>
-    </div>
-  </footer>
   <!-- footer -->
+  <footer id="footer"    data-aos="fade-up"
+data-aos-duration="1500">
+  <h1 class="text-center">BookPhilia</h1>
+  <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae, accusantium.</p>
+  
+  <div class="copyright text-center">
+      &copy; Copyright <strong>BookPhilia</strong> .All Rights Reserved
+  </div>
+  <div class="credite text-center">
+      Designed By <a href="#"><span>Aziz BOUZEZI & Ahmed BEN HMIDA</span></a>
+  </div>
+</footer>
+<!-- footer -->
 </template>
 
 <script>
@@ -31,7 +25,7 @@ name: "FooterView",
 /* footer */
 #footer{
 width: 100%;    
-background-color: #080808;
+background: linear-gradient(45deg, #e0d4b2, #f0e1b2);
 box-shadow: 0px 0px 5px black;
 margin-top: 100px;
 }

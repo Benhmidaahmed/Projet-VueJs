@@ -1,218 +1,187 @@
 <template>
-    <div class="book-details-page">
-      <nav class="navbar">
-        <div class="logo"><b style="margin-left: 50px;">PROJECT</b></div>
-        <ul class="nav-links">
-          <router-link :to="{ name: 'Home' }"><li><a style="border-bottom: 2px solid red" href="#">Home</a></li></router-link>
-          <li><a href="#books">Library</a></li>
-          <li><a href="#about">About</a></li>
-          <router-link :to="{ name: 'Contact' }"><li><a href="#">Contact</a></li></router-link>
-        </ul>
-        <div class="nav-actions">
-          <div class="search-container">
-            <input type="text" v-model="searchQuery" placeholder="Search books..." class="search-bar" />
-            <div class="search-icon">
-              <img src="../assets/images/loupe.png" alt="Search" />
-            </div>
-          </div>
-          <div class="cart-icon">
-            <img src="../assets/images/shopping-bag.png" alt="Cart" />
-            <div v-if="cartCount > 0" class="cart-count">{{ cartCount }}</div>
-          </div>
-        </div>
-      </nav>
-  
-      <h1>{{ book.title || 'Book Details' }}</h1>
-  
-      <div v-if="book.title">
-        <img :src="book.image ? require(`@/assets/images/${book.image}`) : require('@/assets/images/shopping-bag.png')" :alt="book.title" />
-        <h2>{{ book.title }}</h2>
-        <p><strong>Author:</strong> {{ book.author }}</p>
-        <p><strong>Description:</strong> {{ book.description }}</p>
+  <div class="book-details-page">
+    <NavBar v-model:searchQuery.sync="searchQuery" :cartCount="cartCount" />
+    
+    <div class="book-container">
+      <div class="book-image">
+        <img 
+          :src="book.image ? require(`@/assets/images/${book.image}`) : require('@/assets/images/shopping-bag.png')" 
+          :alt="book.title"
+          :class="{ blurred: cartCount >= book.quantity || book.quantity === 0 }" />
       </div>
-  
-      <!-- Add to Cart Button -->
-      <button
-        class="shop-button"
-        :disabled="cartCount >= book.quantity"
-        :aria-disabled="cartCount >= book.quantity"
-        :class="{ disabled: cartCount >= book.quantity }"
-        @click="addToCart(book.id)"
-      >
-        Add to Cart
-      </button>
-  
-      <!-- Decrease Cart Count Button -->
-      <button
-        class="shop-button"
-        :disabled="cartCount === 0"
-        @click="decreaseCartCount"
-        :class="{ disabled: cartCount === 0 || book.quantity === 0 }"
-        v-if="cartCount > 0"
-      >
-        Decrease Cart Count
-      </button>
-  
-      <div v-else>
-        <p>Loading book details...</p>
+      <div class="book-details">
+     
+        <h1 :class="{ blurred: cartCount >= book.quantity || book.quantity === 0 }">{{ book.title }}</h1>
+        <p :class="{ blurred: cartCount >= book.quantity || book.quantity === 0 }"><strong>Author:</strong> {{ book.author }}</p>
+        <p :class="{ blurred: cartCount >= book.quantity || book.quantity === 0 }"><strong>Description:</strong> {{ book.description }}</p>
+        
+        <!-- Add to Cart Button -->
+        <button
+          class="shop-button"
+          :disabled="cartCount >= book.quantity"
+          :aria-disabled="cartCount >= book.quantity"
+          :class="{ disabled: cartCount >= book.quantity }"
+          @click="addToCart(book.id)"
+        >
+          Add to Cart
+        </button>
+    
+        <!-- Decrease Cart Count Button -->
+        <button
+          class="shop-button"
+          :disabled="cartCount === 0"
+          @click="decreaseCartCount"
+          :class="{ disabled: cartCount === 0 || book.quantity === 0 }"
+          v-if="cartCount > 0"
+        >
+          Decrease Cart Count
+        </button>
       </div>
     </div>
-  </template>
-  
-  <script>
-import axios from 'axios';
+    
+    <FooterView></FooterView>
+  </div>
+</template>
 
-export default {
-  name: 'BookDetailsPage',
-  data() {
-    return {
-      book: {}, // Book data
-      searchQuery: '', // Search query for the search bar
-      cartCount: 0, // Count of books in the cart
-    };
-  },
-  mounted() {
-    const bookId = Number(this.$route.params.id); // Get book ID from route
-    axios
-      .get('https://raw.githubusercontent.com/Benhmidaahmed/books/main/books')
-      .then((response) => {
-        const bookData = response.data.books.find((b) => b.id === bookId);
-        if (bookData) {
-          this.book = bookData; // Set the book data
-        } else {
-          console.error('Book not found!');
+    
+    <script>
+  import axios from 'axios';
+  import NavBar from "@/components/NavBar.vue"
+  import FooterView from "@/components/FooterView.vue"
+
+  export default {
+    name: 'BookDetailsPage',
+    components:{
+      NavBar,FooterView,
+    },
+    data() {
+      return {
+        book: {}, // Book data
+        searchQuery: '', // Search query for the search bar
+        cartCount: 0, // Count of books in the cart
+      };
+    },
+    mounted() {
+      const bookId = Number(this.$route.params.id); // Get book ID from route
+      axios
+        .get('https://raw.githubusercontent.com/Benhmidaahmed/books/main/books')
+        .then((response) => {
+          const bookData = response.data.books.find((b) => b.id === bookId);
+          if (bookData) {
+            this.book = bookData; // Set the book data
+          } else {
+            console.error('Book not found!');
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching book details:', error);
+        });
+    },
+    methods: {
+      exploreBooks() {
+        window.location.href = "#books";
+      },
+      addToCart(bookId) {
+        if (this.cartCount < this.book.quantity) {
+          this.cartCount++; // Increase cart count only if it's less than available stock
+          console.log(`Book ${bookId} added to cart.`);
         }
-      })
-      .catch((error) => {
-        console.error('Error fetching book details:', error);
-      });
-  },
-  methods: {
-    exploreBooks() {
-      window.location.href = "#books";
+      },
+      decreaseCartCount() {
+        if (this.cartCount > 0) {
+          this.cartCount--; // Decrease cart count
+          console.log("Cart count decreased.");
+        }
+      },
     },
-    addToCart(bookId) {
-      if (this.cartCount < this.book.quantity) {
-        this.cartCount++; // Increase cart count only if it's less than available stock
-        console.log(`Book ${bookId} added to cart.`);
-      }
-    },
-    decreaseCartCount() {
-      if (this.cartCount > 0) {
-        this.cartCount--; // Decrease cart count
-        console.log("Cart count decreased.");
-      }
-    },
-  },
-};
-</script>
+  };
+  </script>
 
-  
-  <style scoped>
-  .navbar {
-  background: #ffffff;
-  color: rgb(0, 0, 0);
+    
+<style scoped>
+.book-details-page {
+  padding-top: 80px;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: flex-start; /* Align to the top */
+  min-height: 100vh; /* Ensure the container takes full height */
+  flex-direction: column;
+}
+
+
+.book-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 20px 20px;
-  position: fixed;
-  top: 0;
-  left: 0; 
-  right: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  max-width: 960px; /* Medium container */
+  width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto; /* Center container horizontally and add top/bottom margin */
+  margin-top: 50px; /* Custom margin-top for spacing */
 }
 
-.home-page {
-  padding-top: 80px;
-}
-
-.nav-links {
-  font-size: large;
-  list-style: none;
+.book-image {
+  flex: 1;
+  padding-right: 20px;
   display: flex;
-  gap: 50px;
-  margin-top: 10px;
+  justify-content: center;
 }
 
-.nav-links a {
-  color: black;
-  text-decoration: none;
-  font-weight: 100;
+.book-image img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: cover;
 }
 
-.nav-actions {
+.book-details {
+  flex: 2;
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 15px;
+  max-width: 600px;
 }
 
-.search-container {
-  position: relative;
-  margin-right: 30px;
-}
-
-.search-bar {
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 50px;
-  font-size: 14px;
-  width: 200px;
-  padding-right: 30px; /* To make space for the icon */
-}
-
-.search-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.search-icon img {
-  width: 20px;
-  height: 20px;
-}
-
-.cart-icon img {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  margin-right: 20px;
-  position: relative;
-}
-
-.cart-count {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background-color: red;
-  color: white;
-  border-radius: 50%;
-  padding: 5px;
-  font-size: 14px;
+.book-details h1 {
+  font-size: 2rem;
   font-weight: bold;
-  min-width: 30px;
-  text-align: center;
+  margin-bottom: 10px;
 }
 
-  .book-details-page {
-    padding-top: 80px;
-    text-align: center;
-  }
-  .book-detail img {
-    width: 50%;
-    max-width: 500px;
-    object-fit: cover;
-    margin-bottom: 20px;
-  }
-  .book-detail h1,
-  .book-detail h2 {
-    font-size: 2em;
-  }
-  .book-detail p {
-    font-size: 1.2em;
-  }
-  </style>
-  
+.book-details h2 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.book-details p {
+  font-size: 1rem;
+  margin: 5px 0;
+}
+
+.shop-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.shop-button:hover {
+  background-color: #0056b3;
+}
+
+.shop-button:disabled,
+.shop-button.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+</style>
+
+    

@@ -1,6 +1,6 @@
 <template>
   <div class="review-container" >
-    <h3>Commentaires</h3>
+    <h3 >Commentaires</h3>
    <div class="review">
     <ul>
       <li v-for="(review, index) in reviews" :key="index">
@@ -28,18 +28,24 @@ export default {
 </script>
 <style scoped>
 h3 {
+  color:#e0d4b2;
+    text-align: center;
+    font-weight: bold;
+    
+    
+    text-shadow: 1px 1px 1px black;
+    border-bottom: 2px ;
   text-align: center;
 
 }
 .review-container {
-  width: 80%;
+  width: 70%;
   padding: 20px;
   background-color: white;
   -webkit-box-shadow: 0px 2px 20px -12px rgba(0, 0, 0, 0.57);
   -moz-box-shadow: 0px 2px 20px -12px rgba(0, 0, 0, 0.57);
   box-shadow: 2px 20px -12px rgba(0, 0, 0, 0.57);
-  margin-left: 130px;
-  margin-right: 90px;
+  margin:auto;
   margin-top: 20px ;
   border: 2px solid #d8d8d8;
 }
