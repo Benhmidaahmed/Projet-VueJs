@@ -1,14 +1,6 @@
 <template>
   <div class="contact-page">
-    <nav class="navbar">
-      <div class="logo"><b style="margin-left: 50px;">PROJECT</b></div>
-      <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#books">Library</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
+    <NavBar></NavBar>
 
     <!-- Contact Form Section -->
     <section class="contact-form">
@@ -33,15 +25,21 @@
       </div>
     </section>
 
-    <footer>
-      <p>&copy; 2024 PROJECT. All Rights Reserved.</p>
-    </footer>
+    
   </div>
+  <FooterView></FooterView>
 </template>
 
 <script>
+import NavBar from '@/components/NavBar.vue';
+import FooterView from '@/components/FooterView.vue';
+
+
 export default {
   name: "ContactPage",
+  components:{
+    NavBar,FooterView
+  },
   data() {
     return {
       form: {
@@ -54,14 +52,7 @@ export default {
   },
   methods: {
     submitForm() {
-      // Logic to handle form submission
-      // Here you can integrate an API call to send the form data
-      console.log("Form submitted", this.form);
-
-      // After submission, show the thank you message
       this.submitted = true;
-
-      // Reset the form
       this.form.name = "";
       this.form.email = "";
       this.form.message = "";
@@ -76,19 +67,7 @@ export default {
   font-family: Arial, sans-serif;
 }
 
-.navbar {
-  background: #ffffff;
-  color: rgb(0, 0, 0);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 20px;
-  position: fixed;
-  top: 0;
-  left: 0; 
-  right: 0;
-  z-index: 1000;
-}
+
 
 .nav-links {
   font-size: large;
@@ -107,7 +86,7 @@ export default {
 .contact-form {
   max-width: 600px;
   margin: 100px auto;
-  background-color: #f9f9f9;
+  background-color: #f0e1b2;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -143,24 +122,31 @@ export default {
 }
 
 .submit-button {
-  background-color: #000;
-  color: white;
-  padding: 10px 20px;
+  display: inline-block;
+  padding: 8px 16px; 
+  background: linear-gradient(45deg, #e0d4b2, #f0e1b2);
+  color: black;
+  text-transform: uppercase;
+  font-size: 14px; 
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); 
   cursor: pointer;
-  font-size: 16px;
-  width: 100%;
+  transition: all 0.3s ease; 
+  text-align: center;
 }
 
 .submit-button:hover {
-  background-color: #555;
+  background: #e0d4b2;
+  transform: scale(1.1);
+  box-shadow: 0 5px 7px rgba(0, 0, 0, 0.15); 
 }
 
 .thank-you-message {
   margin-top: 20px;
   text-align: center;
-  color: green;
+  color: #555;
 }
 
 footer {

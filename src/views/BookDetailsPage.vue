@@ -23,7 +23,7 @@
           :class="{ disabled: cartCount >= book.quantity }"
           @click="addToCart(book.id)"
         >
-          Add to Cart
+          Add to your cart
         </button>
     
         <!-- Decrease Cart Count Button -->
@@ -34,7 +34,7 @@
           :class="{ disabled: cartCount === 0 || book.quantity === 0 }"
           v-if="cartCount > 0"
         >
-          Decrease Cart Count
+          Return the item
         </button>
       </div>
     </div>
@@ -56,19 +56,19 @@
     },
     data() {
       return {
-        book: {}, // Book data
-        searchQuery: '', // Search query for the search bar
-        cartCount: 0, // Count of books in the cart
+        book: {},
+        searchQuery: '',
+        cartCount: 0, 
       };
     },
     mounted() {
-      const bookId = Number(this.$route.params.id); // Get book ID from route
+      const bookId = Number(this.$route.params.id);
       axios
-        .get('https://raw.githubusercontent.com/Benhmidaahmed/books/main/books')
+        .get('https://raw.githubusercontent.com/AzizBouzezi/books/main/books')
         .then((response) => {
           const bookData = response.data.books.find((b) => b.id === bookId);
           if (bookData) {
-            this.book = bookData; // Set the book data
+            this.book = bookData;
           } else {
             console.error('Book not found!');
           }
@@ -83,13 +83,13 @@
       },
       addToCart(bookId) {
         if (this.cartCount < this.book.quantity) {
-          this.cartCount++; // Increase cart count only if it's less than available stock
+          this.cartCount++;
           console.log(`Book ${bookId} added to cart.`);
         }
       },
       decreaseCartCount() {
         if (this.cartCount > 0) {
-          this.cartCount--; // Decrease cart count
+          this.cartCount--; 
           console.log("Cart count decreased.");
         }
       },
@@ -98,13 +98,13 @@
   </script>
 
     
-<style scoped>
+<style >
 .book-details-page {
   padding-top: 80px;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: flex-start; /* Align to the top */
-  min-height: 100vh; /* Ensure the container takes full height */
+  justify-content: center; 
+  align-items: flex-start;
+  min-height: 100vh;
   flex-direction: column;
 }
 
@@ -112,14 +112,14 @@
 .book-container {
   display: flex;
   justify-content: space-between;
-  max-width: 960px; /* Medium container */
+  max-width: 960px; 
   width: 100%;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color:white;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin: 20px auto; /* Center container horizontally and add top/bottom margin */
-  margin-top: 50px; /* Custom margin-top for spacing */
+  margin: 20px auto; 
+  margin-top: 50px;
 }
 
 .book-image {
@@ -166,14 +166,15 @@
   font-size: 1rem;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #e0d4b2;
   color: white;
   border: none;
+  border-radius:20px;
   transition: background-color 0.3s ease;
 }
 
 .shop-button:hover {
-  background-color: #0056b3;
+  background-color: #555;
 }
 
 .shop-button:disabled,

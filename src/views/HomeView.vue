@@ -5,7 +5,7 @@
 
 
     <!-- Carousel -->
-    <div id="carouselExampleDark" class="carousel carousel-dark slide w-100" data-bs-ride="carousel">
+    <div id="carouselExampleDark" class="carousel carousel-dark slide w-100 fade-in1" data-bs-ride="carousel">
   <!-- Indicateurs -->
   <div class="carousel-indicators">
     <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -14,18 +14,18 @@
   
   <!-- Contenu du carrousel -->
   <div class="carousel-inner">
-    <div class="carousel-item active" data-bs-interval="10000">
+    <div class="carousel-item active" data-bs-interval="4000">
       <img src="../assets/images/te.webp" class="d-block w-100 img-fluid" alt="Image 1">
       <div class="carousel-caption  d-md-block">
-        <h5>Titre du Slide 1</h5>
-        <p>Description du Slide 1</p>
+        <h5>Welcome to BookPhilia</h5>
+        <p>Where Stories Live and Imagination Thrives.</p>
       </div>
     </div>
-    <div class="carousel-item" data-bs-interval="2000">
+    <div class="carousel-item" data-bs-interval="4000">
       <img src="../assets/images/test3.webp" class="d-block w-100 img-fluid" alt="Image 2">
       <div class="carousel-caption  d-md-block">
-        <h5 class="mb-5">Titre du Slide 2</h5>
-        <p>Description du Slide 2</p>
+        <h5 class="mb-5">Looking for a book?</h5>
+        <p>U came to the right place</p>
       </div>
     </div>
   </div>
@@ -43,14 +43,12 @@
 
 
     <!-- Books Section -->
-    <section id="books" class="products">
+    <section id="books" class="products fade-in">
       <h2 id="h2">Featured Books</h2>
       <div class="product-list" id="shop">
-        
-        <div
-          v-for="book in filteredBooks"
-          :key="book.id"
-          class="product-card"
+        <div v-for="book in filteredBooks" 
+        :key="book.id" 
+        class="product-card"
           :class="{ outOfStock: book.quantity === 0, limitReached: cart.filter(item => item.id === book.id).length >= book.quantity }"
         >
           <!-- Image Section -->
@@ -91,7 +89,7 @@
           <!-- Decrease Cart Count Button -->
           <button
             class="shop-button"
-            :disabled="!isInCart(book)"
+:disabled="!isInCart(book)"
             @click="decreaseCartCount(book)"
             :class="{ disabled: !isInCart(book) }"
             v-if="isInCart(book)"
@@ -103,7 +101,7 @@
     </section>
 
     <!-- About Section -->
-    <div class="about" id="about">
+    <div class="about fade-in" >
       <div class="about_image">
         <img src="../assets/images/about.png" />
       </div>
@@ -142,7 +140,7 @@ export default {
     return {
       books: [],
       searchQuery: "",
-      cart: [],  // Store books added to the cart
+      cart: [],
       reviews: [],
     };
   },
@@ -165,27 +163,30 @@ export default {
       .catch((error) => {
         console.error("Error fetching books:", error);
       });
+      setTimeout(() => {
+      document.querySelectorAll(".fade-in").forEach((element) => {
+        element.style.opacity = "1"; 
+      });
+    }, 100); 
   },
+  
   methods: {
     exploreBooks() {
       window.location.href = "#books";
     },
     addToCart(book) {
       this.cart.push(book);
-      console.log(`Book ${book.id} added to cart.`);
     },
     decreaseCartCount(book) {
       const index = this.cart.findIndex(item => item.id === book.id);
       if (index !== -1) {
-        this.cart.splice(index, 1);  // Remove the book from the cart
-        console.log(`Cart count for book ${book.id} decreased.`);
+        this.cart.splice(index, 1); 
       }
     },
     isInCart(book) {
       return this.cart.some(item => item.id === book.id);
     },
     addReview(newReview) {
-      // Ajouter le commentaire reçu à la liste
       this.reviews.push(newReview);
     },
   },
@@ -194,6 +195,27 @@ export default {
 
 
 <style scoped>
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px); 
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); 
+  }
+}
+.fade-in {
+  animation: fadeIn 6s ease-in-out;
+  opacity: 0;
+  animation-fill-mode: forwards; 
+}
+.fade-in1{
+  animation: fadeIn 2s ease-in-out; 
+  opacity: 0;
+  animation-fill-mode: forwards; 
+}
+
 #h2{
  
   color:#e0d4b2;
@@ -206,7 +228,7 @@ export default {
     margin-bottom:30px;
 }
 .learn-more-container .about_btn {
-  background-color: #000000; /* Match the base color of other buttons */
+  background-color: #000000; 
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
@@ -216,28 +238,14 @@ export default {
   display: inline-block;
   width: auto;
   transition: background-color 0.3s ease, transform 0.3s ease;
-/* Global Styles */}
-.learn-more-container .about_btn:hover {
-  background-color: #7f7a42; /* Darker shade for hover effect */
-  transform: scale(1.1); /* Slight scale on hover */
 }
-body {
-  background-color: black;
+.learn-more-container .about_btn:hover {
+  background-color: #7f7a42; 
+  transform: scale(1.1); 
 }
 
-/* Navbar Styles */
-.navbar {
-  background: linear-gradient(45deg, #e0d4b2, #f0e1b2); 
-  color: #333;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); 
-  padding: 20px 50px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
+
+
 
 .navbar .navbar-nav {
   flex-grow: 1;
@@ -255,13 +263,6 @@ body {
   object-fit: cover;
 }
 
-/* Navbar hover effect */
-.navbar:hover {
-  background-color: #d0c18f;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
-}
-
-/* Navbar Links Styling */
 .nav-links {
   font-size: 16px;
   list-style: none;
@@ -296,8 +297,6 @@ body {
 .nav-links a:hover:before {
   width: 100%;
 }
-
-/* Navbar Actions */
 .nav-actions {
   display: flex;
   align-items: center;
@@ -357,8 +356,6 @@ body {
   text-align: center;
   animation: bounce 0.6s ease-in-out infinite alternate;
 }
-
-/* Cart count animation */
 @keyframes bounce {
   0% {
     transform: translateY(0);
@@ -370,8 +367,6 @@ body {
     transform: translateY(0);
   }
 }
-
-/* Hero Section */
 .hero {
   background-color: #000;
   height: 400px;
@@ -384,8 +379,6 @@ body {
   font-weight: bold;
   margin-bottom: 20px;
 }
-
-/* Products Section */
 .products {
   padding: 20px;
   text-align: center;
@@ -452,12 +445,13 @@ body {
 
 .product-card button {
   margin-top: 15px;
-  background-color: #000000;
+  background-color: #e0d4b2;
   color: white;
   border: none;
   padding: 10px 20px;
   cursor: pointer;
-  width: 100%;
+  width: 80%;
+  border-radius:30px;
 }
 
 .product-card button:hover {
@@ -485,58 +479,58 @@ body {
 .outOfStock {
   opacity: 0.6;
 }
-/* Styles pour les petits écrans */
+
 @media screen and (max-width: 768px) {
   .product-list {
     display: grid;
-    justify-items: left; /* Centre les éléments dans la grille */
-    width: 100%; /* S'adapte à la largeur de l'écran */
+    justify-items: left;
+    width: 100%; 
     padding: 0 10px;
     box-sizing: border-box;
-    gap: 20px; /* Ajoute un espacement entre les cartes */
+    gap: 20px; 
   }
 
   .product-card {
-    width: 95%; /* Augmente la largeur de la carte sur petits écrans */
-    max-width: 500px; /* Augmente la largeur maximale */
-    padding: 25px; /* Ajoute plus d'espace à l'intérieur */
-    font-size: 1.3rem; /* Agrandit le texte */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ajoute une ombre pour un meilleur visuel */
+    width: 95%;
+    max-width: 500px; 
+    padding: 25px; 
+    font-size: 1.3rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .product-image {
     width: 100%;
     height: auto;
-    max-height: 450px; /* Augmente la hauteur maximale de l'image */
+    max-height: 450px; 
     object-fit: contain;
   }
 
   h5 {
-    font-size: 1.7rem; /* Taille plus grande pour le titre */
+    font-size: 1.7rem; 
     text-align: left;
   }
 
   p {
-    font-size: 1.3rem; /* Agrandit le texte de l'auteur */
+    font-size: 1.3rem;
     text-align: left;
   }
 
   .shop-button {
-    padding: 12px 20px; /* Bouton plus grand */
-    font-size: 1.2rem; /* Taille du texte du bouton */
-    margin: 15px auto; /* Espace au-dessus et au-dessous */
+    padding: 12px 20px; 
+    font-size: 1.2rem; 
+    margin: 15px auto;
     display: block;
-    background-color: black; /* Couleur du bouton */
+    background-color: black; 
     color: white;
     border: none;
-    border-radius: 5px; /* Coins arrondis */
-    cursor: pointer; /* Curseur pour indiquer qu'il est cliquable */
+    border-radius: 5px;
+    cursor: pointer; 
   }
 
   #h2 {
-    text-align: left; /* Centre le texte horizontalement */
-     /* Espace plus grand autour */
-    font-size: 2.2rem; /* Ajuste la taille du h2 */
+    text-align: left;
+    
+    font-size: 2.2rem;
   }
   .products{
     width: 800px;
@@ -549,15 +543,6 @@ body {
     
   }
 }
-
-
-
-
-
-
-
-
-/* About Section */
 .about {
   width: 100%;
   height: auto;
@@ -609,25 +594,23 @@ body {
   transform: scale(1.1);
 }
 
-/* Responsive Design for About Section */
 @media (max-width: 768px) {
   .about {
-    flex-direction: column; /* Change direction to column */
-    align-items: center; /* Center items horizontally */
-    text-align: center; /* Center text */
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
   }
 
   .about .about_image img {
-    width: 90%; /* Scale image for small screens */
-    margin-bottom: 20px; /* Add spacing between image and text */
+    width: 90%; 
+    margin-bottom: 20px;
   }
 
   .about .about_tag p {
-    width: 100%; /* Make text container responsive */
-    text-align: center; /* Center text for small screens */
+    width: 100%;
+    text-align: center; 
   }
 }
-/* Centrage des éléments sur les petits écrans */
 @media (max-width: 768px) {
   .home-page {
     display: flex;
@@ -652,7 +635,6 @@ body {
   }
 }
 
-/* Ajustement du carousel pour qu'il prenne toute la largeur */
 #carouselExampleDark {
   width: 100vw;
   margin: 0 auto;
@@ -667,9 +649,8 @@ body {
   height: 600px;
 }
 
-/* Responsive Design */
 @media (max-width: 1024px) {
-  /* Adjust navbar and search for tablets and smaller screens */
+  
   .navbar {
     padding: 15px 30px;
   }
@@ -690,10 +671,8 @@ body {
   .cart-icon {
     margin-top: 10px;
   }
-
-  /* Products Section */
   .product-card {
-    width: calc(33% - 20px); /* Adjust product cards */
+    width: calc(33% - 20px);
   }
 
   .about {
@@ -702,7 +681,7 @@ body {
   }
 
   .about .about_image img {
-    width: 100%; /* Full width for small screens */
+    width: 100%;
   }
 
   .about .about_tag {
@@ -714,7 +693,7 @@ body {
 }
 
 @media (max-width: 768px) {
-  /* Mobile Devices */
+  
   .navbar {
     flex-wrap: wrap;
     justify-content: space-between;
@@ -758,75 +737,73 @@ body {
     margin-top: 10px;
   }
 }
-/* Carrousel Titre */
-/* Carrousel Titre */
+
 #carouselExampleDark .carousel-caption h5 {
-  font-size: 3.5rem; /* Augmente la taille du titre */
-  color: white; /* Définit la couleur du texte en blanc */
-  font-weight: bold; /* Rend le texte en gras */
-  text-align: left; /* Aligne le titre à gauche */
-  position: absolute; /* Positionne le titre de manière absolue */
-  top: -290px; /* Place le titre en haut du carrousel */
-  left: 0; /* Place le titre à gauche */
-  padding-left: 20px; /* Ajoute un peu d'espace à gauche du titre */
-  padding-top: 20px; /* Ajoute un peu d'espace au-dessus du titre */
+  font-size: 3.5rem; 
+  color: white; 
+  font-weight: bold; 
+  text-align: left;
+  position: absolute; 
+  top: -290px; 
+  left: 0; 
+  padding-left: 20px; 
+  padding-top: 20px; 
  
 }
 
-/* Carrousel Description */
 #carouselExampleDark .carousel-caption p {
-  color: white; /* Définit la couleur de la description en blanc */
-  font-size: 1.2rem; /* Taille plus petite pour la description */
-  text-align: left; /* Aligne la description à gauche */
-  position: absolute; /* Positionne la description de manière absolue */
-  top: -200px; /* Positionne la description juste en dessous du titre */
-  left: 0; /* Aligne la description à gauche */
-  padding-left: 20px; /* Ajoute un peu d'espace à gauche de la description */
+  color: white;
+  font-size: 1.2rem;
+  text-align: left; 
+  position: absolute; 
+  top: -200px; 
+  left: 0; 
+  padding-left: 20px; 
 }
 @media (max-width: 1200px) {
   #carouselExampleDark .carousel-caption h5 {
-    font-size: 2.5rem; /* Réduit la taille du titre sur les écrans moyens */
-    top: -300px; /* Ajuste la position du titre sur les écrans moyens */
+    font-size: 2.5rem;
+    top: -300px; 
   }
   #carouselExampleDark .carousel-caption p {
-    font-size: 1.2rem; /* Réduit la taille de la description sur les petits écrans */
-    top: -230px; /* Ajuste la position de la description */
+    font-size: 1.2rem;
+    top: -230px;
   }
 }
 
 @media (max-width: 992px) {
   #carouselExampleDark .carousel-caption h5 {
-    font-size: -2.5rem; /* Réduit encore la taille du titre sur les petits écrans */
-    top: -300px; /* Ajuste la position du titre sur les petits écrans */
+    font-size: -2.5rem; 
+    top: -300px;
   }
 
   #carouselExampleDark .carousel-caption p {
-    font-size: 1.2rem; /* Réduit la taille de la description sur les petits écrans */
-    top: -230px; /* Ajuste la position de la description */
+    font-size: 1.2rem; 
+    top: -230px; 
   }
 }
 
 @media (max-width: 768px) {
   #carouselExampleDark .carousel-caption h5 {
-    font-size: 2.5rem; /* Réduit la taille du titre sur les très petits écrans */
-    top: -300px; /* Positionne le titre plus bas sur les petits écrans */
+    font-size: 2.5rem; 
+    top: -300px; 
   }
 
   #carouselExampleDark .carousel-caption p {
-    font-size: 1.2rem; /* Réduit la taille de la description sur les très petits écrans */
-    top: -240px; /* Ajuste la position de la description */
+    font-size: 1.2rem; 
+    top: -240px; 
   }
 }
 
 @media (max-width: 576px) {
   #carouselExampleDark .carousel-caption h5 {
-    font-size: 2.5rem; /* Réduit encore la taille du titre pour les très petits écrans */
-    top: -300px; /* Ajuste la position du titre sur les très petits écrans */
+    font-size: 2.5rem; 
+    top: -300px;
   }
 
   #carouselExampleDark .carousel-caption p {
-    font-size: 1.2rem; /* Réduit la taille de la description */
-    top: -230px; /* Ajuste la position de la description */
+    font-size: 1.2rem; 
+    top: -190px; 
   }
 }
 
