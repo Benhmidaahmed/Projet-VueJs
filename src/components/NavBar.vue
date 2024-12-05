@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><i class="fa fa-book me-3"></i>BOOKPHILIA</a>
+      <img src="../assets/images/logo2.jpg" alt="" class="navbar-logo">
+<a class="navbar-brand" href="#">BOOKPHILIA</a>
+
       <button
         class="navbar-toggler"
         type="button"
@@ -117,6 +119,21 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
 }
+.navbar-logo {
+  width: 30px; /* حجم الشعار */
+  height: auto; /* للحفاظ على النسبة */
+  margin-right: 10px; /* مسافة بين الشعار والعنوان */
+  display: inline-block; /* لتثبيت الشعار بجانب النص */
+  vertical-align: middle; /* محاذاة عمودية مع النص */
+}
+
+.navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  font-size: 20px; /* حجم الخط حسب رغبتك */
+  color: #333; /* لون النص */
+}
+
 
 
 
