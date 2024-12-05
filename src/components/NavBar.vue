@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <img src="../assets/images/logo2.jpg" alt="" class="navbar-logo">
+      <img src="../assets/images/logo3.webp" alt="" class="navbar-logo">
 <a class="navbar-brand" href="#">BOOKPHILIA</a>
 
       <button
@@ -120,8 +120,8 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 }
 .navbar-logo {
-  width: 45px; 
-  height: auto; 
+  width: 50px; 
+  height: 45px; 
   margin-right: 10px; 
   display: inline-block;
   vertical-align: middle;
