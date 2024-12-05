@@ -120,18 +120,19 @@ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 }
 .navbar-logo {
-  width: 30px; /* حجم الشعار */
-  height: auto; /* للحفاظ على النسبة */
-  margin-right: 10px; /* مسافة بين الشعار والعنوان */
-  display: inline-block; /* لتثبيت الشعار بجانب النص */
-  vertical-align: middle; /* محاذاة عمودية مع النص */
+  width: 45px; 
+  height: auto; 
+  margin-right: 10px; 
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 5px;
 }
 
 .navbar-brand {
   display: inline-flex;
   align-items: center;
-  font-size: 20px; /* حجم الخط حسب رغبتك */
-  color: #333; /* لون النص */
+  font-size: 20px; 
+  color: #333; 
 }
 
 
