@@ -173,6 +173,7 @@ export default {
   methods: {
     exploreBooks() {
       window.location.href = "#books";
+     
     },
     addToCart(book) {
       this.cart.push(book);
