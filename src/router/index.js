@@ -1,32 +1,32 @@
-import { createRouter, createWebHistory } from 'vue-router'; // Vue Router version 4
-import HomePage from '@/views/HomeView.vue'; // La page d'accueil
+import { createRouter, createWebHistory } from 'vue-router'; 
+import HomePage from '@/views/HomeView.vue'; 
 import BookDetailsPage from '@/views/BookDetailsPage.vue';
 import Contact from "@/views/Contact.vue";
- // La page de détails du livre
+ 
 
 const routes = [
   {
     path: '/', 
     name: 'Home', 
-    component: HomePage, // Page d'accueil
+    component: HomePage, 
   },
   {
-    path: '/book/:id', // Route pour les détails du livre
-    name: 'BookDetails', // Nom de la route
-    component: BookDetailsPage, // Composant pour la page de détails
-    props: true, // Passer les paramètres comme props dans le composant
+    path: '/book/:id', 
+    name: 'BookDetails', 
+    component: BookDetailsPage, 
+    props: true, 
   },
   {
-    path: '/', // Route pour les détails du livre
-    name: 'Contact', // Nom de la route
-    component: Contact, // Composant pour la page de détails
-    props: true, // Passer les paramètres comme props dans le composant
+    path: '/', 
+    name: 'Contact', 
+    component: Contact, 
+    props: true, 
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(), // Utilisation de l'historique HTML5 pour la navigation
-  routes, // Définition des routes
+  history: createWebHistory(), 
+  routes, 
 });
 
 export default router;

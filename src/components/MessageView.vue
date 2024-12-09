@@ -112,21 +112,20 @@ padding: 8px 16px;
 background: linear-gradient(45deg, #e0d4b2, #f0e1b2);
 color: black;
 text-transform: uppercase;
-font-size: 14px; /* Slightly smaller font size */
+font-size: 14px; 
 font-weight: bold;
 border: none;
-border-radius: 4px; /* Adjust border radius for smaller button */
-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Slightly smaller shadow */
+border-radius: 4px; 
+box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); 
 cursor: pointer;
-transition: all 0.3s ease; /* Smooth transition for hover effects */
+transition: all 0.3s ease; 
 text-align: center;
 }
 
 #messagebtn:hover {
-background: #e0d4b2; /* Hover effect */
-transform: scale(1.1); /* Slight zoom on hover */
-box-shadow: 0 5px 7px rgba(0, 0, 0, 0.15); /* Enhanced hover shadow */
+background: #e0d4b2;
+transform: scale(1.1); 
+box-shadow: 0 5px 7px rgba(0, 0, 0, 0.15); 
 }
 
-/* contact */
 </style>
